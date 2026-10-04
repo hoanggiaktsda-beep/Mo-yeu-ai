@@ -1,0 +1,16 @@
+{
+  "name": "Mỡ AI — Visual Studio",
+  "short_name": "Mỡ AI",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0b090c",
+  "theme_color": "#120f14",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
