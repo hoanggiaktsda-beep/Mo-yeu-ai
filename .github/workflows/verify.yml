@@ -1,0 +1,17 @@
+name: Validate MỠ AI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check app-v13.js
+      - run: node tests/smoke-test.cjs
