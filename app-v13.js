@@ -666,10 +666,10 @@ function compileVisualPrompt(v){
  const resolved=realityResolve(v),rv=adaptForPlatform(resolved.v),ctx=resolved.ctx,styling=resolveVisualStyling(rv),wardrobe=rv.wardrobe,palette=styling.palette;
  const stamp=ctx.now.toLocaleString("vi-VN",{timeZone:"Asia/Ho_Chi_Minh",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});
  const notes=safeVisualNotes(rv),body=rv.bodyImage&&rv.bodyLocked?BODY_NEUTRAL_PROFILE:"";
- const refs=[rv.faceImage?"Use the supplied FACE ID portrait for consistent adult facial features and hairstyle.":"No FACE ID portrait provided.",rv.outfitImage?"Use the supplied OUTFIT image for clothing details.":"No outfit reference image provided; follow the wardrobe description."];
+ const refs=[rv.faceImage?"FACE IDENTITY LOCK — PRIMARY VISUAL SOURCE: Match the supplied FACE ID portrait as closely as possible. Preserve the original eye shape and spacing, nose bridge and tip, lip contours, jawline, cheek structure, facial proportions, skin characteristics and hairstyle. Do not redesign, beautify, average, or substitute the face. Scene, pose, camera and lighting may change without altering facial identity.":"No FACE ID portrait provided; do not claim identity matching.",rv.outfitImage?"OUTFIT ID — WARDROBE ONLY: Use the supplied outfit reference only for garment silhouette, construction, colors, fabric and styling; do not copy its face, hair, or body proportions.":"No outfit reference image provided; follow the wardrobe description."];
  const p=[
- "REFERENCES: "+refs.join(" "),
- body?"BODY PROFILE (neutral locked text): "+body:"",
+ "REFERENCE PRIORITY: FACE ID controls facial identity exclusively; BODY ID controls physique exclusively; OUTFIT ID controls clothing exclusively. Never blend identity across reference images. "+refs.join(" "),
+ body?"BODY ID — PHYSIQUE ONLY (neutral locked text): "+body+" Do not derive facial identity or clothing from BODY ID.":"",
  "SCENE: Photorealistic editorial lifestyle photograph in "+rv.scene+", Hà Nội, Việt Nam, around "+stamp+" ("+ctx.phase+"). Subject is "+rv.activity+".",
  "WARDROBE: "+styling.text,
  "POSE: "+resolveVisualPose(rv.activity),
