@@ -503,12 +503,12 @@ function saveVisual(v){try{const copy={...v,notes:cleanVisualNotes(v.notes)};del
 function visualCharacterBible(){return "MỠ_ID — CANONICAL CHARACTER: adult Vietnamese/East Asian woman, visual age 25–28, height about 165 cm. FACE LOCK: oval face with soft natural V-line, dark-brown almond eyes, refined small nose, softly full nude-pink lips, luminous realistic skin, long thick dark softly-wavy hair; refined natural makeup. SILHOUETTE LOCK: toned athletic hourglass, narrow waist about 56 cm, visually balanced fuller bust and hips; 99–56–99 is a visual proportion reference, never cartoonish or anatomically exaggerated. Preserve realistic adult anatomy. When MỠ_CANONICAL_REFERENCE is supplied, it is the PRIMARY VISUAL SOURCE OF TRUTH: match facial identity, hair DNA and silhouette before applying scene, wardrobe, pose or lighting."}
 function visualModeRules(mode){const rules={Everyday:"Natural candid lifestyle; comfortable context-aware wardrobe and relaxed pose.",Work:"Architect/designer lifestyle; focused, intelligent, refined; laptop, sketchbook, drawings or material samples may appear.",Date:"Romantic polished lifestyle; elegant styling, affectionate warmth, tasteful composition.",Travel:"Editorial travel lifestyle; wardrobe and activity must fit location and weather.",Black:"Dark-luxury, high-fashion, cinematic and confident art direction. Black is a mood, not a mandatory clothing color; use tasteful adult fashion/editorial styling and non-explicit composition.",Resort:"Adult resort/swim lifestyle. Swimwear may be used only when natural to pool, beach or resort context; tasteful fashion/lifestyle framing, natural activity and non-explicit composition.",Diary:"Single-image visual diary; one believable candid everyday moment, editorial and coherent."};return rules[mode]||rules.Everyday}
 const VISUAL_UI={
- modes:["01 · Đời thường — Everyday","02 · Công việc — Work","03 · Du lịch — Travel","04 · Hẹn hò — Date","05 · Nhật ký — Diary","06 · Resort — Resort","07 · Black Mode — Dark luxury"],
+ modes:["01 · Đời thường","02 · Công việc","03 · Du lịch","04 · Hẹn hò","05 · Nhật ký","06 · Nghỉ dưỡng","07 · Sang trọng huyền bí"],
  scenes:["Mỡ quyết định","Studio nội thất","Văn phòng kiến trúc","Café thiết kế","Café phố Hà Nội","Phòng khách ở Nhà","Phòng ngủ master","Bếp / bàn ăn","Ban công căn hộ","Penthouse","Căn hộ dark-luxury","Showroom nội thất","Gallery nghệ thuật","Thư viện","Nhà hàng fine dining","Khách sạn","Hotel lounge","Rooftop","Sảnh luxury","Phố cổ Hà Nội","Hồ Tây","Công viên","Thành phố về đêm","Sân bay / lounge","Hồ bơi / resort","Bãi biển","Du thuyền"],
  colors:["Tự động · tránh lặp","Black","Burgundy","Champagne","Ivory","Beige","Camel","Chocolate","Deep emerald","Olive","Midnight blue","Navy","Cobalt","Graphite","Dusty rose","Silver-grey","Deep plum"],
  lights:["Mỡ quyết định theo thực tế","Ánh sáng cửa sổ tự nhiên mềm","Ban mai dịu","Nắng sáng trong","Ánh sáng tự nhiên ấm · cinematic","Trưa khuếch tán","Trời âm u mềm","Chiều vàng ấm","Ngược sáng viền tóc","Blue hour","Đèn nội thất 2700K","Đèn nội thất 3000K","Window light + practical lamps","Rembrandt mềm","Low-key cinematic","High-key editorial","Night city lights","Neon city ambience"]
 };
-function modeKey(x){if(/Work|Công việc/.test(x))return"Work";if(/Travel|Du lịch/.test(x))return"Travel";if(/Date|Hẹn hò/.test(x))return"Date";if(/Diary|Nhật ký/.test(x))return"Diary";if(/Resort/.test(x))return"Resort";if(/Black/.test(x))return"Black";return"Everyday"}
+function modeKey(x){if(/Work|Công việc/.test(x))return"Work";if(/Travel|Du lịch/.test(x))return"Travel";if(/Date|Hẹn hò/.test(x))return"Date";if(/Diary|Nhật ký/.test(x))return"Diary";if(/Resort|Nghỉ dưỡng/.test(x))return"Resort";if(/Black|huyền bí/.test(x))return"Black";return"Everyday"}
 function uiClean(x){return String(x||"").trim()}
 const OUTFIT_MIX={
  base:["Không phối thêm","Đầm dạ hội satin","Đầm cocktail nhung","Váy lụa hai dây","Đầm lệch vai","Đầm cổ yếm","Đầm quấn midi","Đầm sơ mi","Đầm maxi resort","Bộ suit nữ","Áo sơ mi lụa + chân váy bút chì","Áo blazer + quần tây","Áo tank top + quần jeans","Áo len + chân váy midi","Áo crop top + quần ống rộng","Áo corset kiểu thời trang + chân váy midi","Bộ đồ mặc nhà satin","Đồ bơi một mảnh + áo sơ mi linen","Áo khoác trench + quần suông","Jumpsuit tối giản"],
@@ -536,7 +536,22 @@ const FASHION_BRAIN={
  Resort:["Mỡ quyết định","Resort maxi dress — chiffon","Kaftan sheer-layered over swimwear — chiffon","One-piece swimwear + linen shirt — swim fabric / linen","One-piece asymmetric swimwear — swim fabric","Two-piece high-waist swimwear + cover-up — swim fabric / chiffon","Two-piece bandeau swimwear + linen shirt — swim fabric / linen","Halter bikini + sarong — swim fabric","Triangle bikini + oversized resort shirt — swim fabric / linen","Crochet resort dress layered over swimwear — crochet","Silk resort set — silk"],
  Black:["Mỡ quyết định","Power suit midnight blue — wool / satin lapel","Tuxedo-inspired blazer dress — wool crepe","Deep burgundy satin midi dress — silk satin","Deep emerald evening gown — silk","Black velvet column dress — velvet","Asymmetric one-shoulder dress — satin","Backless evening dress — silk, tasteful editorial","Satin slip dress + structured blazer — satin / wool","Structured corset-inspired evening dress — satin, tasteful editorial","Sheer-layered evening dress with opaque lining — chiffon / silk","Leather-look tailored dress — coated fabric","Metallic graphite cocktail dress — lamé / crepe","Deep-plum velvet mini dress + long coat — velvet / wool","Sculptural draped dress — silk jersey","High-slit evening gown — silk, tasteful editorial"]
 };
-function wardrobeOptions(mode){return FASHION_BRAIN[mode]||FASHION_BRAIN.Everyday}
+const OUTFIT_COLLECTION=[
+"Đầm dạ hội đỏ rượu — satin","Đầm cocktail đen — nhung","Váy lụa trắng ngà — silk",
+"Suit đỏ rượu — wool","Suit xanh navy — wool","Đầm lệch vai — satin","Đầm cổ yếm — silk",
+"Đầm ôm midi — crepe","Đầm xếp nếp — satin","Đầm maxi lụa — silk",
+"Áo sơ mi trắng + chân váy đen — cotton","Áo blouse lụa + quần tây — silk",
+"Áo blazer + quần ống rộng — wool","Áo vest gile + quần suông — wool",
+"Áo thun + jeans — cotton / denim","Áo tank top + cardigan — knit",
+"Áo len cổ lọ + chân váy midi — knit","Áo sơ mi linen + quần linen — linen",
+"Đầm resort trắng — cotton","Đầm hoa maxi — chiffon",
+"Bộ mặc nhà lụa — silk","Đầm ngủ satin + áo choàng — satin",
+"Đồ bơi một mảnh + áo khoác linen — swim fabric / linen",
+"Áo khoác trench + váy midi — cotton","Áo khoác tweed + chân váy — tweed",
+"Áo khoác da + quần tây — leather","Jumpsuit đen tối giản — crepe"
+];
+function wardrobeOptions(mode){return [...new Set([...(FASHION_BRAIN[mode]||FASHION_BRAIN.Everyday),...OUTFIT_COLLECTION])]}
+
 function refreshWardrobeByMode(){const modeEl=document.getElementById("v-mode"),sel=document.getElementById("v-wardrobe");if(!modeEl||!sel)return;const m=modeKey(modeEl.value),prev=uiClean(sel.value),opts=wardrobeOptions(m);sel.innerHTML=opts.map(x=>'<option '+(uiClean(x)===prev?'selected':'')+'>'+esc(x)+'</option>').join("");if(!opts.some(x=>uiClean(x)===prev))sel.value="Mỡ quyết định"}
 const MODE_DECISIONS={
  Everyday:{wardrobe:["áo len mỏng và quần suông — knit","sơ mi mềm và quần tailored — cotton","váy midi casual — cotton blend","cardigan và váy midi — knit"],activity:["đang đọc sách và uống cà phê","đang nghe nhạc và thư giãn","đang chọn hoa cho căn phòng","đang viết nhật ký","đang dạo quanh không gian","đang sắp xếp bàn làm việc","đang pha trà","đang ngắm phố qua cửa sổ","đang chăm cây","đang xem một cuốn tạp chí thiết kế"],scene:["Café phố Hà Nội","Phòng khách ở Nhà","Ban công căn hộ","Thư viện","Hồ Tây"]},
