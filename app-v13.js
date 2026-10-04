@@ -623,7 +623,7 @@ function resolveVisualLighting(rv,ctx){
 }
 function validateVisualSafety(v){
  const fields=[["activity",v.activity],["scene",v.scene],["wardrobe",v.wardrobe],["notes",v.notes]];
- const prohibited=/(?:\\b(?:minor|underage|child|preteen|schoolgirl|nude|naked|topless|porn|explicit sex|sexual act|genitals|nipples)\\b|vị thành niên|trẻ em|khỏa thân|khoả thân|lộ ngực|lộ vùng kín|quan hệ tình dục|khiêu dâm)/i;
+ const prohibited=/(?:\b(?:minor|underage|child|preteen|schoolgirl|nude|naked|topless|porn|explicit sex|sexual act|genitals|nipples)\b|vị thành niên|trẻ em|khỏa thân|khoả thân|lộ ngực|lộ vùng kín|quan hệ tình dục|khiêu dâm)/i;
  const flagged=fields.filter(([,value])=>prohibited.test(String(value||""))).map(([name])=>name);
  return {ok:flagged.length===0,flagged};
 }
