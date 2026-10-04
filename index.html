@@ -4,14 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#120f14">
+<meta name="description" content="MỠ AI — Visual Character Studio: Identity, Mode, Fashion, Activity & Platform Policy">
 <title>MỠ AI — Visual Character Studio</title>
 <link rel="icon" href="./logo.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="./logo.svg">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=clean-20261004">
+<link rel="stylesheet" href="./styles.css?v=20261004-clean20">
 </head>
 <body>
-<div id="app"><p style="padding:24px;color:#eee;font-family:sans-serif">Đang khởi động MỠ AI…</p></div>
-<script src="./app-v13.js?v=clean-20261004"></script>
+<div id="app"><p style="padding:24px;color:#eee;font-family:system-ui,sans-serif">Đang khởi động MỠ AI…</p></div>
+<noscript>Ứng dụng cần bật JavaScript để hoạt động.</noscript>
+<script>
+function moStartupError(){
+ if(document.querySelector(".studio-shell"))return;
+ document.getElementById("app").innerHTML='<main style="min-height:100dvh;display:grid;place-content:center;padding:28px;color:#f3e5ef;background:#120f14;font-family:system-ui,sans-serif;text-align:center"><h1>MỠ AI</h1><p>Ứng dụng chưa thể khởi động. Vui lòng tải lại trang hoặc thử mở bằng Safari/Chrome.</p><button style="padding:12px 20px;border:1px solid #baa1b3;background:#29202b;color:#fff;border-radius:12px" onclick="location.reload()">TẢI LẠI</button></main>';
+}
+window.addEventListener("error",moStartupError);
+</script>
+<script src="./app-v13.js?v=20261004-clean20" onerror="moStartupError()"></script>
+<script>if(!document.querySelector(".studio-shell"))moStartupError();</script>
 </body>
 </html>
