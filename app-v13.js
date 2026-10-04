@@ -600,22 +600,40 @@ function adaptForPlatform(v){
 function platformPromptRule(platform){return platformPolicy(platform).rule}
 
 
-const BODY_NEUTRAL_PROFILE="Adult woman with a naturally proportionate, balanced silhouette, gently defined waist, relaxed shoulders, natural posture and realistic anatomical proportions. Keep the overall physique consistent across images without exaggeration.";
+const BODY_NEUTRAL_PROFILE="Adult woman with naturally balanced proportions, relaxed shoulders, a gently defined waist and realistic posture. Maintain a consistent overall physique without exaggeration.";
+function wardrobeColor(w){const colors=["midnight blue","deep burgundy","burgundy","deep emerald","emerald","black","ivory","white","navy","champagne","deep plum","graphite","beige","camel","chocolate","olive","cobalt","silver-grey"];return colors.find(c=>String(w).toLowerCase().includes(c))||""}
+function resolveVisualStyling(rv){
+ const w=rv.wardrobe||"",specified=wardrobeColor(w),chosen=palettesForVisual(rv);
+ if(rv.outfitImage)return {text:"Match the supplied OUTFIT reference for garment shape, primary color, materials and construction; "+w+" is secondary guidance.",palette:specified||chosen};
+ if(specified&&chosen.toLowerCase()!==specified)return {text:w+". Keep "+specified+" as the garment's primary color; use "+chosen+" only as a subtle accessory/accent color.",palette:specified};
+ return {text:w+". Primary garment color: "+chosen+".",palette:chosen};
+}
+function resolveVisualPose(activity){
+ const a=String(activity||"").toLowerCase();
+ if(/đứng|standing|ngắm thành phố|bên cửa sổ/.test(a))return "Natural standing posture, relaxed shoulders, believable hand placement and gaze appropriate to the activity.";
+ if(/ngồi|sitting|seated|đọc sách|uống cà phê|dùng bữa/.test(a))return "Natural seated posture, realistic body balance and hand placement appropriate to the activity.";
+ if(/đi bộ|bước|walking|dạo/.test(a))return "Natural walking posture, balanced stride and realistic body movement.";
+ return "A natural believable posture consistent with the stated activity, realistic anatomy and balance.";
+}
+function resolveVisualLighting(rv,ctx){
+ const l=String(rv.lighting||"");
+ if(ctx.hour>=12&&ctx.hour<16&&/chiều vàng|golden hour/i.test(l))return "Soft afternoon daylight, realistic directional shadows and balanced exposure; avoid exaggerated sunset/golden-hour lighting at this time.";
+ if(ctx.hour>=6&&ctx.hour<18&&/night|neon|đèn nội thất 2700|đèn nội thất 3000/i.test(l))return "Plausible daylight with interior practical fixtures as subtle secondary lighting.";
+ return l+". Natural shadows and physically plausible exposure for "+ctx.phase+".";
+}
 function compileVisualPrompt(v){
- const resolved=realityResolve(v),rv=adaptForPlatform(resolved.v),ctx=resolved.ctx,wardrobe=rv.wardrobe,palette=palettesForVisual(rv);
+ const resolved=realityResolve(v),rv=adaptForPlatform(resolved.v),ctx=resolved.ctx,styling=resolveVisualStyling(rv),wardrobe=rv.wardrobe,palette=styling.palette;
  const stamp=ctx.now.toLocaleString("vi-VN",{timeZone:"Asia/Ho_Chi_Minh",hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"});
- const notes=cleanVisualNotes(rv.notes);
- const body=rv.bodyImage&&rv.bodyLocked?BODY_NEUTRAL_PROFILE:"";
- const outfit=rv.outfitImage?"Use the attached OUTFIT REFERENCE for garment construction, fabric and details.":"Use the wardrobe described below.";
- const ref=rv.faceImage?"Use the attached FACE ID reference for consistent adult facial features and hairstyle.":"No FACE ID image provided; do not claim a reference was attached.";
+ const notes=cleanVisualNotes(rv.notes),body=rv.bodyImage&&rv.bodyLocked?BODY_NEUTRAL_PROFILE:"";
+ const refs=[rv.faceImage?"Use the supplied FACE ID portrait for consistent adult facial features and hairstyle.":"No FACE ID portrait provided.",rv.outfitImage?"Use the supplied OUTFIT image for clothing details.":"No outfit reference image provided; follow the wardrobe description."];
  const p=[
- "REFERENCES: "+ref+" "+outfit+" BODY ID is a private analysis source only: its image is NOT attached or transmitted.",
- body?"BODY PROPORTIONS (locked neutral text): "+body:"",
+ "REFERENCES: "+refs.join(" "),
+ body?"BODY PROFILE (neutral locked text): "+body:"",
  "SCENE: Photorealistic editorial lifestyle photograph in "+rv.scene+", Hà Nội, Việt Nam, around "+stamp+" ("+ctx.phase+"). Subject is "+rv.activity+".",
- "WARDROBE: "+(rv.outfitImage?"Prioritize the supplied outfit image. ":"")+wardrobe+". Color: "+palette+".",
- "POSE: Natural standing or seated posture consistent with activity, realistic anatomy and body balance.",
+ "WARDROBE: "+styling.text,
+ "POSE: "+resolveVisualPose(rv.activity),
  "CAMERA: "+rv.camera+". Natural perspective.",
- "LIGHTING: "+rv.lighting+". Physically plausible for "+ctx.phase+".",
+ "LIGHTING: "+resolveVisualLighting(rv,ctx),
  "QUALITY: High-end photorealistic editorial photography, realistic skin texture, hands and materials.",
  notes?"USER DIRECTION: "+notes:""
  ].filter(Boolean);
